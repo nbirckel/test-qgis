@@ -6,15 +6,12 @@
 <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 <base target="_blank">
 <link rel="stylesheet" type="text/css" href="./Qgis2threejs.css">
-<style type="text/css">
-#popup, #header, #layerpanel {
-  left: 36px;
-}
-</style>
 <script src="./threejs/three.min.js"></script>
 <script src="./threejs/OrbitControls.js"></script>
 <script src="./threejs/ViewHelper.js"></script>
 <script src="./Qgis2threejs.js"></script>
+<script src="./dat-gui/dat.gui.min.js"></script>
+<script src="./dat-gui_panel.js"></script>
 </head>
 <body>
 <div id="view">
@@ -75,9 +72,10 @@
       </table>
 
       <h1>About</h1>
-      <div id="about"><img src="./Qgis2threejs.png">
+      <div id="about">
         This page was made with <a href="https://www.qgis.org/">QGIS</a> and <a href="https://github.com/minorua/Qgis2threejs">Qgis2threejs</a> plugin (version 2.7.1).
-        <div>Powered by <a href="https://threejs.org/">three.js</a>
+        <div>Powered by <a href="https://threejs.org/">three.js</a>,
+        <a href="https://code.google.com/p/dat-gui/">dat-gui</a>
         <span id="lib_proj4js"> and <a href="https://trac.osgeo.org/proj4js/">Proj4js</a></span>.</div>
       </div>
     </div>
@@ -87,13 +85,6 @@
 <!-- progress bar -->
 <div id="progress"><div id="progressbar"></div></div>
 
-<!-- menu -->
-<div id="toolbtns">
-  <div id="layerbtn"></div>
-  <div id="animbtn" class="hidden"></div>
-  <div id="infobtn"></div>
-</div>
-
 <!-- header and footer -->
 <div id="header"></div>
 <div id="footer"><div  style="text-align:center;background:#fff;width:100em;margin:0 auto">
@@ -101,11 +92,6 @@
 Test de rendu en extrude des tracés de bâtiments OSM en s'appuyant sur la valeur de l'attribut "hauteur".</p><p>
 Colorisation des bâtiments d'après une donnée de taux d'occupation fictive stockés dans un attribut, du plus faible en bleu au plus haut en rouge.</p>
 </div></div>
-
-<!-- layer panel -->
-<div id="layerpanel">
-  <div id="layerlist"></div>
-</div>
 
 <!-- animation -->
 <div id="narrativebox" class="ef1">
@@ -116,7 +102,6 @@ Colorisation des bâtiments d'après une donnée de taux d'occupation fictive st
 </div>
 
 <script>
-Q3D.Config.allVisible = true;
 Q3D.Config.coord.visible = false;
 Q3D.Config.viewpoint = {lookAt:{x:687802.1417477978,y:6224012.875247704,z:0.0},pos:{x:688185.3115170827,y:6223532.167698142,z:277.1043612757957}};
 Q3D.Config.localMode = true;
@@ -125,15 +110,23 @@ var container = document.getElementById("view"),
     app = Q3D.application,
     gui = Q3D.gui;
 
-app.init(container);       // initialize viewer
+app.init(container);    // initialize viewer
 
 // load the scene
 app.loadSceneFile("./data/index/scene.js", function (scene) {
   // scene file has been loaded
   app.start();
+
+  gui.dat.initLayersFolder(scene);
+
 }, function (scene) {
   // all relevant files have been loaded
 
+  if (Q3D.Config.gui.customPlane) {
+    var zMin = undefined,
+        zMax = undefined;
+    gui.dat.initCustomPlaneFolder(zMin, zMax);
+  }
 });
 </script>
 </body>
