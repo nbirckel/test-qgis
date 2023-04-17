@@ -14,6 +14,7 @@
 <script src="./threejs/three.min.js"></script>
 <script src="./threejs/OrbitControls.js"></script>
 <script src="./threejs/ViewHelper.js"></script>
+<script src="./proj4js/proj4.js"></script>
 <script src="./Qgis2threejs.js"></script>
 </head>
 <body>
@@ -113,7 +114,9 @@
 
 <script>
 Q3D.Config.allVisible = true;
-
+Q3D.Config.coord.latlon = true;
+Q3D.Config.viewpoint = {lookAt:{x:687859.3623336762,y:6224007.36001051,z:0.0},pos:{x:688148.3494892971,y:6223724.647033723,z:113.62256934449658}};
+Q3D.Config.localMode = true;
 
 var container = document.getElementById("view"),
     app = Q3D.application,
@@ -122,7 +125,7 @@ var container = document.getElementById("view"),
 app.init(container);       // initialize viewer
 
 // load the scene
-app.loadSceneFile("./data/index/scene.json", function (scene) {
+app.loadSceneFile("./data/index/scene.js", function (scene) {
   // scene file has been loaded
   app.start();
 }, function (scene) {
