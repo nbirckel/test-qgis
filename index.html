@@ -113,7 +113,9 @@
 
 <script>
 Q3D.Config.allVisible = true;
-
+Q3D.Config.coord.visible = false;
+Q3D.Config.viewpoint = {lookAt:{x:687862.8093569222,y:6224015.632866301,z:0.0},pos:{x:688070.9900458485,y:6223611.429543563,z:155.81666828942585}};
+Q3D.Config.localMode = true;
 
 var container = document.getElementById("view"),
     app = Q3D.application,
@@ -122,7 +124,7 @@ var container = document.getElementById("view"),
 app.init(container);       // initialize viewer
 
 // load the scene
-app.loadSceneFile("./data/index/scene.json", function (scene) {
+app.loadSceneFile("./data/index/scene.js", function (scene) {
   // scene file has been loaded
   app.start();
 }, function (scene) {
